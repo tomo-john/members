@@ -84,7 +84,9 @@ new class extends Component {
     <x-pages::settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
             <flux:input wire:model.live="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
-            <div>入力された名前は: {{ $name }}</div>
+            <!-- Livewire flux テスト-->
+            <flux:icon.bolt />
+            <div><flux:icon.bolt class="inline"/>入力された名前は: {{ $name }}</div>
 
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />

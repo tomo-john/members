@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,3 +12,7 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 require __DIR__.'/settings.php';
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('post', PostController::class);
+});

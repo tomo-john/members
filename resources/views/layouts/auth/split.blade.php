@@ -18,6 +18,12 @@
                     [$message, $author] = str(Illuminate\Foundation\Inspiring::quotes()->random())->explode('-');
                 @endphp
 
+                <!-- 追加したテキスト -->
+                <div class="relative z-20 text-white flex flex-1 flex-col items-center justify-center text-center gap-4">
+                    <p class="text-3xl font-bold">ユーザー登録のご案内🐶</p>
+                    <p class="text-lg">こちらから新規ユーザー登録ができます。<br>フォームより必要事項をご入力ください<i class="fa-solid fa-dog ml-2"></i></p>
+                </div>
+
                 <div class="relative z-20 mt-auto">
                     <blockquote class="space-y-2">
                         <flux:heading size="lg">&ldquo;{{ trim($message) }}&rdquo;</flux:heading>

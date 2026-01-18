@@ -61,4 +61,9 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    // ひとりのユーザーが複数の投稿を持つ
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
 }

@@ -5,9 +5,7 @@
                 投稿の新規作成
             </h2>
 
-            @if (session('message'))
-                {{ session('message') }}
-            @endif
+            <x-message :message="session('message')" />
 
             <form method="post" action="{{ route('post.store') }}" enctype="multipart/form-data">
                 @csrf

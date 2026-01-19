@@ -16,6 +16,13 @@
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                <!-- Post -->
+                <flux:sidebar.group :heading="__('Post')" class="grid">
+                    <flux:sidebar.item icon="user" :href="route('post.create')" :current="request()->routeIs('post.create')" wire:navigate>
+                        新規投稿
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:spacer />

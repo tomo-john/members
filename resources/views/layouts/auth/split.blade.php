@@ -20,8 +20,13 @@
 
                 <!-- 追加したテキスト -->
                 <div class="relative z-20 text-white flex flex-1 flex-col items-center justify-center text-center gap-4">
-                    <p class="text-3xl font-bold">ユーザー登録のご案内🐶</p>
-                    <p class="text-lg">こちらから新規ユーザー登録ができます。<br>フォームより必要事項をご入力ください<i class="fa-solid fa-dog ml-2"></i></p>
+                    @if (request()->routeIs('register'))
+                        <p class="text-3xl font-bold">ユーザー登録のご案内🐶</p>
+                        <p class="text-lg">こちらから新規ユーザー登録ができます。<br>フォームより必要事項をご入力ください<i class="fa-solid fa-dog text-green-500 ml-2"></i></p>
+                    @else
+                        <p class="text-3xl font-bold">おかえりなさい🐶</p>
+                        <p class="text-lg">登録済みのメールアドレスとパスワードでログインしてね。。<br>フォームより必要事項をご入力ください<i class="fa-solid fa-dog text-pink-500 ml-2"></i></p>
+                    @endif
                 </div>
 
                 <div class="relative z-20 mt-auto">

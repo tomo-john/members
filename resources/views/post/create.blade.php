@@ -5,7 +5,9 @@
                 投稿の新規作成
             </h2>
 
-            <x-message :message="session('message')" />
+            <!-- メッセージ表示用 -->
+            <x-message :message="$errors->all()" type="error" />
+            <x-message :message="session('message')" type="success" />
 
             <form method="post" action="{{ route('post.store') }}" enctype="multipart/form-data">
                 @csrf
@@ -13,14 +15,13 @@
                     <div class="w-full flex flex-col">
                         <label for="title" class="font-semibold leading-none mt-4">件名</label>
                         <input type="text" name="title"
-                            class="w-auto py-2 pl-2 placeholder-gray-300 border border-gray-300 rounded-md" id="title">
+                            class="w-auto py-2 pl-2 placeholder-gray-300 border border-gray-300 rounded-md" id="title" value="{{ old('title') }}">
                     </div>
                 </div>
 
                 <div class="w-full flex flex-col">
                     <label for="body" class="font-semibold leading-none mt-4">本文</label>
-                    <textarea name="body" class="w-auto py-2 pl-2 border border-gray-300 rounded-md" id="body" cols="30"
-                        rows="10"></textarea>
+                    <textarea name="body" class="w-auto py-2 pl-2 border border-gray-300 rounded-md" id="body" cols="30" rows="10">{{ old('body') }}</textarea>
                 </div>
 
                 <div class="w-full flex flex-col">

@@ -43,7 +43,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route('post.create')->with('message', '投稿を作成しました');
+        return redirect()->route('post.index')->with('message', '投稿を作成しました');
     }
 
     public function show(Post $post)

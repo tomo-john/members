@@ -1,6 +1,6 @@
 <x-layouts::app>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">投稿の一覧</h2>
+        <h2 class="font-semibold text-xl text-amber-600 leading-tight">投稿の一覧</h2>
         <x-message :message="session('message')" type="success" />
             <p class="text-white">{{ $user->name }}さん、こんにちは<i class="fa-solid fa-dog ml-4"></i></p>
         @foreach ($posts as $post)

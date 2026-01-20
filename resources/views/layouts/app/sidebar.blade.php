@@ -19,7 +19,12 @@
 
                 <!-- Post -->
                 <flux:sidebar.group :heading="__('Post')" class="grid">
-                    <flux:sidebar.item icon="user" :href="route('post.create')" :current="request()->routeIs('post.create')" wire:navigate>
+                    <!-- index -->
+                    <flux:sidebar.item icon="newspaper" :href="route('post.index')" :current="request()->routeIs('post.index')" wire:navigate>
+                        投稿一覧
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item icon="arrow-up" :href="route('post.create')" :current="request()->routeIs('post.create')" wire:navigate>
                         新規投稿
                     </flux:sidebar.item>
                 </flux:sidebar.group>

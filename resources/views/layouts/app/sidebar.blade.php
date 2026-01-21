@@ -24,8 +24,15 @@
                         投稿一覧
                     </flux:sidebar.item>
 
-                    <flux:sidebar.item icon="arrow-up" :href="route('post.create')" :current="request()->routeIs('post.create')" wire:navigate>
+                    <flux:sidebar.item icon="pencil-square" :href="route('post.create')" :current="request()->routeIs('post.create')" wire:navigate>
                         新規投稿
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+
+                <!-- Sand Box -->
+                <flux:sidebar.group :heading="__('Sand Box')" class="grid">
+                    <flux:sidebar.item icon="archive-box-arrow-down" :href="route('sandbox')" :current="request()->routeIs('sandbox')" wire:navigate>
+                        Sand Box
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>

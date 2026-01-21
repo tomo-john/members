@@ -16,3 +16,7 @@ require __DIR__.'/settings.php';
 Route::middleware(['auth'])->group(function () {
     Route::resource('post', PostController::class);
 });
+
+Route::get('/sandbox', function () {
+    return view('sandbox');
+})->name('sandbox');

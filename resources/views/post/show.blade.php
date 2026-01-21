@@ -17,7 +17,14 @@
                     <hr class="w-full">
                     <p class="mt-4 text-gray-600 py-4 whitespace-pre-line">{{ $post->body }}</p>
 
-                    <div class="text-sm font-semibold flex flex-row-reverse">
+                    @if ($post->image)
+                        <div>
+                            (画像ファイル: {{ $post->image}})
+                        </div>
+                        <img src="{{ asset('storage/images/' . $post->image) }}" class="mx-auto" style="height:300px;">
+                    @endif
+
+                    <div class="text-sm font-semibold flex flex-row-reverse text-black">
                         <p> {{ $post->user->name }} • {{ $post->created_at->diffForHumans() }}</p>
                     </div>
                 </div>

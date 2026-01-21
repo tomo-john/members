@@ -8,7 +8,9 @@
                 <div class="mt-4">
                     <div class="bg-white w-full rounded-2xl px-10 py-8 shadow-lg hover:shadow-2xl transition duration-500">
                         <div class="mt-4">
-                            <p class="text-lg text-gray-700 font-semibold hover:underline cursor-pointer">{{ $post->title }}</p>
+                            <p class="text-lg text-gray-700 font-semibold hover:underline cursor-pointer">
+                                <a href="{{ route('post.show', $post )}}">{{ $post->title }}</a>
+                            </p>
                             <hr class="w-full">
                             <p class="mt-4 text-gray-600 py-4">{{ $post->body }}</p>
                             <div class="text-sm font-semibold flex flex-row-reverse text-black">

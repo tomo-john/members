@@ -9,8 +9,9 @@
             <x-message :message="$errors->all()" type="error" />
             <x-message :message="session('message')" type="success" />
 
-            <form method="post" action="{{ route('post.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('post.update', $post) }}" enctype="multipart/form-data">
                 @csrf
+                @method('patch')
                 <div class="md:flex items-center mt-8">
                     <div class="w-full flex flex-col">
                         <label for="title" class="font-semibold leading-none mt-4">件名</label>

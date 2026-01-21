@@ -17,9 +17,15 @@
     <div class="bg-gray-800 mt-6">
         @php
             $item = $sandbox->where('id', 2)->first();
+            $date = $sandbox->where('id', 2)->first()->scheduled_at;
         @endphp
 
-        {{ $item->name }}
-        {{ $item->scheduled_at }}
+        <ul>
+            <li>{{ $date }}</li>
+            <li>{{ $date->diffForHumans() }}</li>
+            <li>{{ $date->format('Y-m-d H:i') }}</li>
+            <li>{{ $date->format('Y/n/j') }}</li>
+            <li>{{ $date->translatedFormat('Y年m月d日(D)') }}</li>
+        </ul>
     </div>
 </x-layouts::app>

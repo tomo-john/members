@@ -13,7 +13,7 @@ class Sandbox extends Model
     ];
 
     protected $casts = [
-        'is_active' => 'boolean'.
+        'is_active' => 'boolean',
         'scheduled_at' => 'datetime',
     ];
 }

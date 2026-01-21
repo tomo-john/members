@@ -3,7 +3,8 @@
         <h1>Hello 🐶</h1>
 
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <form action="{{ route('sandbox.store', $sandbox) }}" method="post" class="space-y-6">
+            <x-message :message="session('message')" type="success" />
+            <form action="{{ route('sandbox.store') }}" method="post" class="space-y-6">
                 @csrf
 
                 <flux:input name="name" label="name" placeholder="例: じょん" />

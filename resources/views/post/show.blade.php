@@ -9,11 +9,20 @@
 
                 <x-message :message="session('message')" type="success" />
                 <div class="bg-white w-full  rounded-2xl px-10 py-8 shadow-lg hover:shadow-2xl transition duration-500">
-                    <div class="mt-4">
-                        <p class="text-lg text-gray-700 font-semibold flex justify-between items-centar">
+                    <div class="flex justify-between">
+                        <div class="text-lg text-gray-700 font-semibold">
                             {{ $post->title }}
-                            <a href="{{ route('post.edit', $post) }}"><flux:button class="bg-teal-700">編集</flux:button></a>
-                        </p>
+                        </div>
+                        <div class="flex justify-end  gap-4 my-2">
+                            <a href="{{ route('post.edit', $post) }}">
+                                <flux:button class="bg-teal-700">編集</flux:button>
+                            </a>
+                            <form method="post" action="{{ route('post.destroy', $post) }}">
+                                @csrf
+                                @method('delete')
+                                <flux:button variant="danger" class="bg-red-700" type="submit" onClick="return confirm('本当に削除しますか？🐶');">削除</flux:button>
+                            </form>
+                        </div>
                     </div>
                     <hr class="w-full">
                     <p class="mt-4 text-gray-600 py-4 whitespace-pre-line">{{ $post->body }}</p>

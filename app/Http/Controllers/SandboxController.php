@@ -9,7 +9,8 @@ class SandboxController extends Controller
 {
     public function index ()
     {
-        return view('sandbox');
+        $sandbox = Sandbox::all();
+        return view('sandbox', compact('sandbox'));
     }
 
     public function store(Request $request)

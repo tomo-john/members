@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SandboxController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,8 +16,7 @@ require __DIR__.'/settings.php';
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('post', PostController::class);
+    Route::get('/sandbox', [SandboxController::class, 'index'])->name('sandbox');
+    Route::post('/sandbox', [SandboxController::class, 'store'])->name('sandbox.store');
 });
 
-Route::get('/sandbox', function () {
-    return view('sandbox');
-})->name('sandbox');

@@ -13,17 +13,24 @@ new class extends Component
         $sandbox = Sandbox::find($this->sandboxId);
         $this->scheduledAt = $sandbox?->scheduled_at;
     }
+
+    public function save()
+    {
+        Sandbox::where('id', $this->sandboxId)
+            ->update([
+                'scheduled_at' => $this->scheduledAt,
+            ]);
+    }
 };
 
 ?>
 
 <div class="space-y-4">
     <div>
-        <label class="block text-sm font-medium">Sandbox ID</label>
-        <input type="number"
-               wire:model.live.debounce.500ms.number="sandboxId"
-               class="border rounded px-3 py-2 w-full"
-               placeholder="IDを入力">
+        <flux:input type="number"
+                    label="Snadbox ID"
+                    wire:model.live.debounce.500ms.number="sandboxId"
+                    placeholder="IDを入力" />
     </div>
 
     <!-- ローディング中を表示 -->
@@ -42,6 +49,15 @@ new class extends Component
                 <p class="text-xs text-gray-500">
                     {{ $scheduledAt->diffForHumans() }}
                 </p>
+            </div>
+
+            <div class="mt-4 space-y-4">
+                <flux:input type="date"
+                            label="new_scheduled_at"
+                            name="scheduled_at"
+                            wire:model="scheduledAt"
+                            view="calendar" />
+                <flux:button variant="primary" wire:click="save">更新</flux:button>
             </div>
         @else
             <p class="text-sm text-gray-400">

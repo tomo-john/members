@@ -20,3 +20,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sandbox', [SandboxController::class, 'store'])->name('sandbox.store');
 });
 
+Route::get('/dogs', function () {
+    return view('dogs');
+})->name('dogs');

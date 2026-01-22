@@ -5,15 +5,26 @@ use App\Models\Sandbox;
 
 new class extends Component
 {
+    public $sandbox;
     public $sandboxId;
     public $scheduledAt;
 
+    // mount()は初期化専用
+    // select用データはここで取る
+    public function mount()
+    {
+        $this->sandbox = Sandbox::select('id', 'name')->get();
+    }
+
+    // updatedは特別
+    // $sandboxIdが変わったら反応
     public function updatedSandboxId()
     {
         $sandbox = Sandbox::find($this->sandboxId);
         $this->scheduledAt = $sandbox?->scheduled_at;
     }
 
+    // 更新処理
     public function save()
     {
         Sandbox::where('id', $this->sandboxId)
@@ -21,17 +32,35 @@ new class extends Component
                 'scheduled_at' => $this->scheduledAt,
             ]);
     }
+
+    // テーブルリセット
+    public function resetTable()
+    {
+        Sandbox::truncate();
+
+        $this->reset([
+            'sandboxId',
+            'scheduledAt',
+        ]);
+    }
+
 };
 
 ?>
 
 <div class="space-y-4">
-    <div>
-        <flux:input type="number"
-                    label="Snadbox ID"
-                    wire:model.live.debounce.500ms.number="sandboxId"
-                    placeholder="IDを入力" />
-    </div>
+    <flux:select label="Snadbox ID"
+                 wire:model.live="sandboxId"
+    >
+        <option value="">選択して下さい🐶</option>
+
+        @foreach ($sandbox as $s)
+            <option value="{{ $s->id }}">
+                #{{ $s->id }} - {{ $s->name }}
+            </option>
+        @endforeach
+
+    </flux:select>
 
     <!-- ローディング中を表示 -->
     <div wire:loading>
@@ -54,7 +83,6 @@ new class extends Component
             <div class="mt-4 space-y-4">
                 <flux:input type="date"
                             label="new_scheduled_at"
-                            name="scheduled_at"
                             wire:model="scheduledAt"
                             view="calendar" />
                 <flux:button variant="primary" wire:click="save">更新</flux:button>
@@ -65,5 +93,15 @@ new class extends Component
                 <i class="fa-solid fa-dog"></i>
             </p>
         @endif
+    </div>
+
+    <div>
+        <flux:button
+            variant="danger"
+            wire:click="resetTable"
+            wire:confirm="本当にテーブルをリセットしますか？🐶"
+        >
+            テーブルリセット
+        </flux:button>
     </div>
 </div>

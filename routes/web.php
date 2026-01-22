@@ -15,11 +15,14 @@ Route::view('dashboard', 'dashboard')
 require __DIR__.'/settings.php';
 
 Route::middleware(['auth'])->group(function () {
+
+    // Post (Laravelの教科書学習用)
     Route::resource('post', PostController::class);
-    Route::get('/sandbox', [SandboxController::class, 'index'])->name('sandbox');
-    Route::post('/sandbox', [SandboxController::class, 'store'])->name('sandbox.store');
+
+    // Sand box (index(get) と store(post) だけを有効にする)
+    Route::resource('sandbox', SandboxController::class)->only(['index', 'store']);
+
+    // Dogs (単一のビュー)
+    Route::view('/dogs', 'dogs')->name('dogs');
 });
 
-Route::get('/dogs', function () {
-    return view('dogs');
-})->name('dogs');

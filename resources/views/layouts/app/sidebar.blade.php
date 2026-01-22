@@ -31,10 +31,18 @@
 
                 <!-- Sand Box -->
                 <flux:sidebar.group :heading="__('Sand Box')" class="grid">
-                    <flux:sidebar.item icon="archive-box-arrow-down" :href="route('sandbox')" :current="request()->routeIs('sandbox')" wire:navigate>
+                    <flux:sidebar.item icon="archive-box-arrow-down" :href="route('sandbox.index')" :current="request()->routeIs('sandbox.index')" wire:navigate>
                         Sand Box
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                <!-- Dogs -->
+                <flux:sidebar.group :heading="__('Dogs')" class="grid">
+                    <flux:sidebar.item icon="face-smile" :href="route('dogs')" :current="request()->routeIs('dogs')" wire:navigate>
+                        <i class="fa-solid fa-dog"></i>
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+
             </flux:sidebar.nav>
 
             <flux:spacer />

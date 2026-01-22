@@ -1,3 +1,3 @@
-<x-layouts::app>
+<x-layouts::dog>
     <livewire:dog-manager />
-</x-layouts:app>
+</x-layouts:dog>

@@ -15,6 +15,8 @@
     </div>
 
     <div class="bg-gray-800 mt-6">
-        <livewire:sandbox-lookup />
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <livewire:sandbox-lookup />
+        </div>
     </div>
 </x-layouts::app>

@@ -19,11 +19,11 @@ new class extends Component
 
 <div class="space-y-4">
     <div>
-        <label class="block text-sm font-medium">Snadbox ID</label>
+        <label class="block text-sm font-medium">Sandbox ID</label>
         <input type="number"
-               wire:model.live.number="sandboxId"
+               wire:model.live.debounce.500ms.number="sandboxId"
                class="border rounded px-3 py-2 w-full"
-               placehokder="IDを入力">
+               placeholder="IDを入力">
     </div>
 
     @if($scheduledAt)

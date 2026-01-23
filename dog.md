@@ -24,3 +24,16 @@ php artisan make:livewire dog-manager
 
 Vole有効ならbladeだけ作成される(`resources/views/components/⚡dog-manager.blade.php`)
 
+## 構成メモ
+
+```bash
+Route::view('/dogs', 'dogs')
+        ↓
+dogs.blade.php
+        ↓
+<livewire:dog-manager />
+        ↓
+dog-manager.blade.php
+（状態 + 処理 + View）
+```
+

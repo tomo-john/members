@@ -28,6 +28,8 @@ new class extends Component
         ]);
 
         $this->resetValidation();
+
+        session()->flash('message', '保存しました');
     }
 };
 ?>
@@ -37,6 +39,12 @@ new class extends Component
         Dog
         <i class="fa-solid fa-dog ml-2"></i>
     </h2>
+
+    @if (session()->has('message'))
+        <div class="rounded-xl bg-green-900/50 text-green-200 px-4 py-3">
+            {{ session('message') }}
+        </div>
+    @endif
 
     <div class="max-w-2xl mx-auto space-y-4 border rounded-2xl mt-6 p-6">
         <flux:input label="Dog name" wire:model="name" placeholder="例: じょん" />

@@ -40,11 +40,27 @@ new class extends Component
         <i class="fa-solid fa-dog ml-2"></i>
     </h2>
 
-    @if (session()->has('message'))
-        <div class="rounded-xl bg-green-900/50 text-green-200 px-4 py-3">
-            {{ session('message') }}
+    <div class="flex justify-center mt-6">
+        <div class="relative flex items-center">
+
+            <!-- 犬: 幅を固定 -->
+            <div class="w-32 flex justify-center">
+                <div class="w-32 h-32 flex justify-center items-center rounded-full bg-gray-600">
+                    <i class="fa-solid fa-dog text-5xl text-white"></i>
+                </div>
+            </div>
+
+            <!-- 吹き出し: 犬の横に重ねる -->
+            @if (session()->has('message'))
+                <div class="absolute left-32 ml-4">
+                    <div class="relative bg-green-900/60 text-green-200 px-4 py-3 rounded-xl max-w-xs whitespace-nowrap flex-items-center">
+                        {{ session('message') }}
+                    </div>
+                </div>
+            @endif
+
         </div>
-    @endif
+    </div>
 
     <div class="max-w-2xl mx-auto space-y-4 border rounded-2xl mt-6 p-6">
         <flux:input label="Dog name" wire:model="name" placeholder="例: じょん" />

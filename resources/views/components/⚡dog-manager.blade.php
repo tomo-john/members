@@ -14,8 +14,10 @@ new class extends Component
         $validated = $this->validate([
             'name' => 'required|string|max:50',
             'birthday' => 'nullable|date',
-            'is_good_boy' => 'boolean',
+            'is_good_boy' => 'nullable|boolean',
         ]);
+
+        $validated['is_good_boy'] ??= false;
 
         Dog::create($validated);
 
@@ -24,6 +26,8 @@ new class extends Component
             'birthday',
             'is_good_boy'
         ]);
+
+        $this->resetValidation();
     }
 };
 ?>

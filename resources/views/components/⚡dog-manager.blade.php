@@ -40,6 +40,7 @@ new class extends Component
         <i class="fa-solid fa-dog ml-2"></i>
     </h2>
 
+    <!-- 犬アイコンとフラッシュメッセージ -->
     <div class="flex justify-center mt-6">
         <div class="relative flex items-center">
 
@@ -52,7 +53,15 @@ new class extends Component
 
             <!-- 吹き出し: 犬の横に重ねる -->
             @if (session()->has('message'))
-                <div class="absolute left-32 ml-4">
+                <div
+                    wire:key="{{ session('message') . now() }}"
+                    x-data="{ show: true }"
+                    x-init="setTimeout(() => show = false, 2000)"
+                    x-show="show"
+                    x-transition.duration.500ms
+                    class="absolute left-32 ml-4"
+                >
+
                     <div class="relative bg-green-900/60 text-green-200 px-4 py-3 rounded-xl max-w-xs whitespace-nowrap flex-items-center">
                         {{ session('message') }}
                     </div>
@@ -62,10 +71,12 @@ new class extends Component
         </div>
     </div>
 
+    <!-- 入力フォーム -->
     <div class="max-w-2xl mx-auto space-y-4 border rounded-2xl mt-6 p-6">
         <flux:input label="Dog name" wire:model="name" placeholder="例: じょん" />
         <flux:input label="Birthday" wire:model="birthday" type="date" />
         <flux:checkbox label="Good Boy? 🐶" wire:model="is_good_boy" />
         <flux:button wire:click="save">保存</flux:button>
     </div>
+
 </div>

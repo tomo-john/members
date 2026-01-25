@@ -27,9 +27,8 @@ new class extends Component
 
         $validated['is_good_boy'] ??= false;
 
-        Dog::create($validated);
-
-        $this->dogs = Dog::latest()->get();
+        $dog = Dog::create($validated);
+        $this->dogs->prepend($dog);
 
         $this->reset(['name', 'birthday', 'is_good_boy']);
         $this->resetValidation();
@@ -38,11 +37,11 @@ new class extends Component
     }
 
     // 削除処理
-    public function delete(Dog $dog)
+    public function delete(int $dogId)
     {
-        $dog->delete();
+        Dog::where('id', $dogId)->delete();
 
-        $this->dogs = Dog::latest()->get();
+        $this->dogs = $this->dogs->reject(fn($dog) => $dog->id === $dogId);
 
         session()->flash('message', '削除しました');
     }

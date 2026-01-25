@@ -8,6 +8,12 @@ new class extends Component
     public $name;
     public $birthday;
     public $is_good_boy;
+    public $dogs;
+
+    public function mount()
+    {
+        $this->dogs = Dog::latest()->get();
+    }
 
     public function save()
     {
@@ -21,12 +27,9 @@ new class extends Component
 
         Dog::create($validated);
 
-        $this->reset([
-            'name',
-            'birthday',
-            'is_good_boy'
-        ]);
+        $this->dogs = Dog::latest()->get();
 
+        $this->reset(['name', 'birthday', 'is_good_boy']);
         $this->resetValidation();
 
         session()->flash('message', '保存しました');
@@ -79,4 +82,31 @@ new class extends Component
         <flux:button wire:click="save">保存</flux:button>
     </div>
 
+    <!-- Dog 一覧 -->
+    <div class="max-w-2xl mx-auto mt-8 space-y-3">
+        <h2 class="text-xl font-semibold text-center">INDEX</h2>
+        @forelse ($dogs as $dog)
+            <div class="flex justify-between items-center border rounded-xl p-4">
+                <div>
+                    <p class="font-semibold">{{ $dog->name }}</p>
+                    <p class="text-sm text-gray-400">
+                        {{ $dog->birthday?->format('Y-m-d') ?? '誕生日未登録' }}
+                    </p>
+                </div>
+
+                <div>
+                    @if ($dog->is_good_boy)
+                        <span class="text-green-400">Good Boy <i class="fa-solid fa-dog"></i></span>
+                    @else
+                        <span class="text-gray-400"><i class="fa-solid fa-dog"></i></span>
+                    @endif
+                </div>
+            </div>
+        @empty
+            <p class="text-center text-gray-400">
+                まだ犬がいません
+                <i class="fa-solid fa-dog"></i>
+            </p>
+        @endforelse
+    </div>
 </div>

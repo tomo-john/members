@@ -10,11 +10,13 @@ new class extends Component
     public $is_good_boy;
     public $dogs;
 
+    // mountは最初に起動したとき1回実行される
     public function mount()
     {
         $this->dogs = Dog::latest()->get();
     }
 
+    // 保存処理
     public function save()
     {
         $validated = $this->validate([
@@ -33,6 +35,16 @@ new class extends Component
         $this->resetValidation();
 
         session()->flash('message', '保存しました');
+    }
+
+    // 削除処理
+    public function delete(Dog $dog)
+    {
+        $dog->delete();
+
+        $this->dogs = Dog::latest()->get();
+
+        session()->flash('message', '削除しました');
     }
 };
 ?>
@@ -86,20 +98,31 @@ new class extends Component
     <div class="max-w-2xl mx-auto mt-8 space-y-3">
         <h2 class="text-xl font-semibold text-center">INDEX</h2>
         @forelse ($dogs as $dog)
-            <div class="flex justify-between items-center border rounded-xl p-4">
-                <div>
-                    <p class="font-semibold">{{ $dog->name }}</p>
-                    <p class="text-sm text-gray-400">
-                        {{ $dog->birthday?->format('Y-m-d') ?? '誕生日未登録' }}
-                    </p>
+            <div wire:key="dog-{{ $dog->id }}" class="flex items-center gap-3">
+                <div class="flex justify-between items-center border rounded-xl p-4 flex-1">
+                    <div>
+                        <p class="font-semibold">{{ $dog->name }}</p>
+                        <p class="text-sm text-gray-400">
+                            {{ $dog->birthday?->format('Y-m-d') ?? '誕生日未登録' }}
+                        </p>
+                    </div>
+
+                    <div>
+                        @if ($dog->is_good_boy)
+                            <span class="text-green-400">Good Boy <i class="fa-solid fa-dog"></i></span>
+                        @else
+                            <span class="text-gray-400"><i class="fa-solid fa-dog"></i></span>
+                        @endif
+                    </div>
                 </div>
 
+                <!-- 削除アイコン -->
                 <div>
-                    @if ($dog->is_good_boy)
-                        <span class="text-green-400">Good Boy <i class="fa-solid fa-dog"></i></span>
-                    @else
-                        <span class="text-gray-400"><i class="fa-solid fa-dog"></i></span>
-                    @endif
+                    <i
+                        wire:click="delete({{ $dog->id }})"
+                        wire:confirm="削除してよろしいですか？"
+                        class="fa-solid fa-trash cursor-pointer hover:text-red-500"
+                    ></i>
                 </div>
             </div>
         @empty

@@ -9,6 +9,7 @@ new class extends Component
     public $birthday;
     public $is_good_boy;
     public $dogs;
+    public ?int $editingDogId = null;
 
     // mountは最初に起動したとき1回実行される
     public function mount()
@@ -16,7 +17,7 @@ new class extends Component
         $this->dogs = Dog::latest()->get();
     }
 
-    // 保存処理
+    // 保存処理(新規・更新どちらも対応)
     public function save()
     {
         $validated = $this->validate([
@@ -27,13 +28,25 @@ new class extends Component
 
         $validated['is_good_boy'] ??= false;
 
-        $dog = Dog::create($validated);
-        $this->dogs->prepend($dog);
+        if ($this->editingDogId) {
+            // 更新
+            $dog = Dog::findOrFail($this->editingDogId);
+            $dog->update($validated);
 
-        $this->reset(['name', 'birthday', 'is_good_boy']);
-        $this->resetValidation();
+            $this->dogs = $this->dogs->map(
+                fn ($d) => $d->id === $dog->id ? $dog : $d
+            );
 
-        session()->flash('message', '保存しました');
+            session()->flash('message', '更新しました');
+        } else {
+            $dog = Dog::create($validated);
+            $this->dogs->prepend($dog);
+
+
+            session()->flash('message', '保存しました');
+        }
+
+        $this->resetForm();
     }
 
     // 削除処理
@@ -44,6 +57,30 @@ new class extends Component
         $this->dogs = $this->dogs->reject(fn($dog) => $dog->id === $dogId);
 
         session()->flash('message', '削除しました');
+    }
+
+    // 更新処理
+    public function update(int $dogId)
+    {
+        $dog = Dog::findOrFail($dogId);
+
+        $this->editingDogId = $dog->id;
+        $this->name = $dog->name;
+        $this->birthday = $dog->birthday?->format('Y-m-d');
+        $this->is_good_boy = $dog->is_good_boy;
+    }
+
+    // フォームリセット
+    public function resetForm()
+    {
+        $this->reset([
+            'name',
+            'birthday',
+            'is_good_boy',
+            'editingDogId',
+        ]);
+
+        $this->resetValidation();
     }
 };
 ?>
@@ -90,7 +127,9 @@ new class extends Component
         <flux:input label="Dog name" wire:model="name" placeholder="例: じょん" />
         <flux:input label="Birthday" wire:model="birthday" type="date" />
         <flux:checkbox label="Good Boy? 🐶" wire:model="is_good_boy" />
-        <flux:button wire:click="save">保存</flux:button>
+        <flux:button wire:click="save">
+            {{ $editingDogId ? '更新' : '保存' }}
+        </flux:button>
     </div>
 
     <!-- Dog 一覧 -->
@@ -113,6 +152,14 @@ new class extends Component
                             <span class="text-gray-400"><i class="fa-solid fa-dog"></i></span>
                         @endif
                     </div>
+                </div>
+
+                <!-- 編集アイコン -->
+                <div>
+                    <i
+                        wire:click="update({{ $dog->id }})"
+                        class="fa-solid fa-pen cursor-pointer hover:text-blue-500"
+                    ></i>
                 </div>
 
                 <!-- 削除アイコン -->

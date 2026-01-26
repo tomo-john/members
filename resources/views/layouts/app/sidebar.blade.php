@@ -43,6 +43,13 @@
                     </flux:sidebar.item>
                 </flux:sidebar.group>
 
+                <!-- Tasks -->
+                <flux:sidebar.group :heading="__('Tasks')" class="grid">
+                    <flux:sidebar.item icon="face-smile" :href="route('tasks')" :current="request()->routeIs('tasks')" wire:navigate>
+                        <i class="fa-solid fa-list-check"></i>
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+
             </flux:sidebar.nav>
 
             <flux:spacer />

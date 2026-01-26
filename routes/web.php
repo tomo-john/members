@@ -22,7 +22,10 @@ Route::middleware(['auth'])->group(function () {
     // Sand box (index(get) と store(post) だけを有効にする)
     Route::resource('sandbox', SandboxController::class)->only(['index', 'store']);
 
-    // Dogs (単一のビュー)
+    // Dogs (Volt: 単一のビュー)
     Route::view('/dogs', 'dogs')->name('dogs');
+
+    // Tasks (Volt: 単一のビュー)
+    Route::view('/tasks', 'tasks')->name('tasks');
 });
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('title');
-            $table->date('due_date')->nullable;
+            $table->date('due_date')->nullable();
             $table->boolean('is_done')->default(false);
             $table->string('priority')->default('middle');
 

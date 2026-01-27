@@ -56,6 +56,22 @@ new class extends Component
 
         $this->resetValidation();
     }
+
+    // is_done切替
+    public function toggle(int $id)
+    {
+        $task = Task::findOrFail($id);
+
+        if ($task->is_done) {
+            $task->update(['is_done' => false]);
+        } else {
+            $task->update(['is_done' => true]);
+        }
+
+        $this->tasks = $this->tasks->map(
+            fn ($t) => $t->id === $task->id ? $task : $t
+        );
+    }
 };
 ?>
 
@@ -114,9 +130,9 @@ new class extends Component
                     </span>
 
                     @if ($task->is_done)
-                        <i class="fa-solid fa-check text-green-400"></i>
+                        <i class="fa-solid fa-check text-green-400" wire:click="toggle({{ $task->id }})"></i>
                     @else
-                        <i class="fa-regular fa-circle text-gray-400"></i>
+                        <i class="fa-regular fa-circle text-gray-400" wire:click="toggle( {{ $task->id }})"></i>
                     @endif
                 </div>
             </div>

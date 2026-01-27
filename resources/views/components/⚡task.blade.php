@@ -116,7 +116,8 @@ new class extends Component
                     </p>
                 </div>
                 <!-- 右側 -->
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-4">
+                    <!-- 優先度 -->
                     <span class="
                         text-xs px-2 py-1 rounded-full
                         @if($task->priority === 'high') bg-red-500
@@ -127,13 +128,25 @@ new class extends Component
                         {{ $priorities[$task->priority] }}
                     </span>
 
-                    <button wire:click="toggle({{ $task->id }})" class="cursor-pointer hover:scale-110 transition">
+                    <!-- 完了トグル -->
+                    <button wire:click="toggle({{ $task->id }})" class="cursor-pointer hover:scale-110 transition w-6 h-6 flex items-center justify-center">
                         @if ($task->is_done)
                             <i class="fa-solid fa-check text-green-400"></i>
                         @else
                             <i class="fa-regular fa-circle text-gray-400"></i>
                         @endif
                     </button>
+
+                    <!-- 編集・削除 -->
+                    <div class="flex items-center gap-2 text-gray-400">
+                        <button class="cursor-pointer hover:text-blue-400 transition" title="編集">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+
+                        <button class="cursor-pointer hover:text-red-400 transition" title="削除">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         @empty

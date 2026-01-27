@@ -62,11 +62,9 @@ new class extends Component
     {
         $task = Task::findOrFail($id);
 
-        if ($task->is_done) {
-            $task->update(['is_done' => false]);
-        } else {
-            $task->update(['is_done' => true]);
-        }
+        $task->update([
+            'is_done' => ! $task->is_done,
+        ]);
 
         $this->tasks = $this->tasks->map(
             fn ($t) => $t->id === $task->id ? $task : $t
@@ -107,7 +105,7 @@ new class extends Component
         <h2 class="font-semibold text-lg">Task List</h2>
 
         @forelse ($tasks as $task)
-            <div class="flex justify-between items-center bg-gray-700 rounded-lg p-3">
+            <div wire:key="task-{{ $task->id }}" class="flex justify-between items-center bg-gray-700 rounded-lg p-3">
                 <!-- 左側 -->
                 <div>
                     <p class="font-semibold text-white">
@@ -129,11 +127,13 @@ new class extends Component
                         {{ $priorities[$task->priority] }}
                     </span>
 
-                    @if ($task->is_done)
-                        <i class="fa-solid fa-check text-green-400" wire:click="toggle({{ $task->id }})"></i>
-                    @else
-                        <i class="fa-regular fa-circle text-gray-400" wire:click="toggle( {{ $task->id }})"></i>
-                    @endif
+                    <button wire:click="toggle({{ $task->id }})" class="cursor-pointer hover:scale-110 transition">
+                        @if ($task->is_done)
+                            <i class="fa-solid fa-check text-green-400"></i>
+                        @else
+                            <i class="fa-regular fa-circle text-gray-400"></i>
+                        @endif
+                    </button>
                 </div>
             </div>
         @empty

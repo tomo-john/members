@@ -10,6 +10,7 @@ new class extends Component
     public ?string $due_date = null;
     public bool $is_done = false;
     public string $priority = 'medium';
+    public ?int $editingTaskId = null;
 
     public array $priorities = [
         'low' => '低',
@@ -38,8 +39,22 @@ new class extends Component
 
         $validated['is_done'] ??= false;
 
-        $task = Task::create($validated);
-        $this->tasks->prepend($task);
+        if ($this->editingTaskId) {
+            $task = Task::findOrFail($this->editingTaskId);
+            $task->update($validated);
+
+            $this->tasks = $this->tasks->map(
+                fn ($t) => $t->id === $task->id ? $task : $t
+            );
+
+            session()->flash('message', $task->title .' を更新しました');
+        } else {
+            $task = Task::create($validated);
+
+            $this->tasks->prepend($task);
+
+            session()->flash('message', $task->title .' を作成しました');
+        }
 
         $this->resetForm();
     }
@@ -70,6 +85,18 @@ new class extends Component
             fn ($t) => $t->id === $task->id ? $task : $t
         );
     }
+
+    // edit: フォームにデータ入れる
+    public function edit(int $id)
+    {
+        $task = Task::findOrFail($id);
+
+        $this->editingTaskId = $task->id;
+        $this->title = $task->title;
+        $this->due_date = $task->due_date?->format('Y-m-d');
+        $this->is_done = $task->is_done;
+        $this->priority = $task->priority;
+    }
 };
 ?>
 
@@ -80,7 +107,7 @@ new class extends Component
     </div>
 
     <!-- フォーム-->
-    <div class="max-w-2xl mx-auto border rounded-xl space-y-4 p-4">
+    <div class="max-w-2xl mx-auto border rounded-xl space-y-4 p-4 my-4">
         <h2 class="font-semibold text-lg">入力フォーム</h2>
         <flux:input label="Title" wire:model.live="title" />
         <flux:input label="Due Date" type="date" wire:model="due_date" />
@@ -96,12 +123,21 @@ new class extends Component
         </flux:select>
 
         <flux:button wire:click="save">
-            保存
+            {{ $editingTaskId ? '更新' : '保存' }}
         </flux:button>
     </div>
 
+    <!-- フラッシュメッセージ -->
+    @if (session()->has('message'))
+        <div class="max-w-2xl mx-auto my-4">
+            <div class="bg-green-600 text-white text-sm rounded-lg px-4 py-2">
+                {{ session('message') }}
+            </div>
+        </div>
+    @endif
+
     <!-- Index -->
-    <div class="max-w-2xl mx-auto borer rounded-xl space-y-4 p-4 bg-gray-600 mt-8">
+    <div class="max-w-2xl mx-auto borer rounded-xl space-y-4 p-4 bg-gray-600 my-4">
         <h2 class="font-semibold text-lg">Task List</h2>
 
         @forelse ($tasks as $task)
@@ -139,7 +175,7 @@ new class extends Component
 
                     <!-- 編集・削除 -->
                     <div class="flex items-center gap-2 text-gray-400">
-                        <button class="cursor-pointer hover:text-blue-400 transition" title="編集">
+                        <button class="cursor-pointer hover:text-blue-400 transition" title="編集" wire:click="edit({{ $task->id }})">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </button>
 

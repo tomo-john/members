@@ -8,13 +8,13 @@ class Sandbox extends Model
 {
     protected $fillable = [
         'name',
+        'is_good_boy',
+        'birthday',
         'mood',
-        'is_active',
-        'scheduled_at',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'scheduled_at' => 'datetime',
+        'is_good_boy' => 'boolean',
+        'birthday' => 'datetime',
     ];
 }

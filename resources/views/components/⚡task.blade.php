@@ -97,6 +97,24 @@ new class extends Component
         $this->is_done = $task->is_done;
         $this->priority = $task->priority;
     }
+
+    // delete: 削除
+    public function delete(int $id)
+    {
+        $task = Task::findOrFail($id);
+
+        $task->delete();
+
+        $this->tasks = $this->tasks->reject(fn($t) => $t->id === $id);
+
+        if ($this->editingTaskId === $id) {
+            $this->resetForm();
+            $this->editingTaskId = null;
+        }
+
+        session()->flash('message', '削除しました');
+        session()->flash('type', 'delete');
+    }
 };
 ?>
 
@@ -108,7 +126,17 @@ new class extends Component
 
     <!-- フォーム-->
     <div class="max-w-2xl mx-auto border rounded-xl space-y-4 p-4 my-4">
-        <h2 class="font-semibold text-lg">入力フォーム</h2>
+        <div class="flex items-center">
+            <h2 class="font-semibold text-lg">入力フォーム</h2>
+            @if ($editingTaskId)
+                <div class="text-sm text-blue-400">
+                    <i class="fa-solid fa-dog mx-1"></i>
+                    編集中です
+                    <i class="fa-solid fa-dog mx-1"></i>
+                </div>
+            @endif
+        </div>
+
         <flux:input label="Title" wire:model.live="title" />
         <flux:input label="Due Date" type="date" wire:model="due_date" />
         <flux:checkbox label="Is done?" wire:model="is_done" />
@@ -130,7 +158,12 @@ new class extends Component
     <!-- フラッシュメッセージ -->
     @if (session()->has('message'))
         <div class="max-w-2xl mx-auto my-4">
-            <div class="bg-green-600 text-white text-sm rounded-lg px-4 py-2">
+            <div class="
+                text-white text-sm rounded-lg px-4 py-2
+                @if(session('type') === 'delete') bg-red-600
+                @else bg-green-600
+                @endif
+            ">
                 {{ session('message') }}
             </div>
         </div>
@@ -179,7 +212,7 @@ new class extends Component
                             <i class="fa-regular fa-pen-to-square"></i>
                         </button>
 
-                        <button class="cursor-pointer hover:text-red-400 transition" title="削除">
+                        <button class="cursor-pointer hover:text-red-400 transition" title="削除" wire:click="delete({{ $task->id }})" wire:confirm="本当に削除してよろしいですか？">
                             <i class="fa-regular fa-trash-can"></i>
                         </button>
                     </div>

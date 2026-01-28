@@ -8,6 +8,7 @@ class Sandbox extends Model
 {
     protected $fillable = [
         'name',
+        'mood',
         'is_active',
         'scheduled_at',
     ];

@@ -48,12 +48,14 @@ new class extends Component
             );
 
             session()->flash('message', $task->title .' を更新しました');
+            session()->flash('type', 'update');
         } else {
             $task = Task::create($validated);
 
             $this->tasks->prepend($task);
 
             session()->flash('message', $task->title .' を作成しました');
+            session()->flash('type', 'create');
         }
 
         $this->resetForm();
@@ -67,6 +69,7 @@ new class extends Component
             'due_date',
             'is_done',
             'priority',
+            'editingTaskId',
         ]);
 
         $this->resetValidation();
@@ -155,16 +158,27 @@ new class extends Component
         </flux:button>
     </div>
 
-    <!-- フラッシュメッセージ -->
+    <!-- フラッシュメッセージ(トースト風) -->
     @if (session()->has('message'))
-        <div class="max-w-2xl mx-auto my-4">
-            <div class="
-                text-white text-sm rounded-lg px-4 py-2
-                @if(session('type') === 'delete') bg-red-600
-                @else bg-green-600
-                @endif
-            ">
-                {{ session('message') }}
+        <div
+            wire:key="{{ session('message') . now() }}"
+            x-data="{ show: true }"
+            x-init="setTimeout(() => show = false, 3000)"
+            x-show="show"
+            x-transition
+            class="fixed top-4 right-4 z-50"
+        >
+            @php
+                [$bgClass, $icon] = match(session('type')) {
+                    'create' => ['bg-green-600', 'fa-solid fa-plus-circle'],
+                    'update' => ['bg-blue-600', 'fa-solid fa-pen-square'],
+                    'delete' => ['bg-red-600', 'fa-solid fa-trash-can'],
+                    default => ['bg-gray-600', 'fa-solid fa-check'],
+            };
+            @endphp
+            <div class="{{ $bgClass }} text-white text-sm rounded-lg px-4 py-3 shadow-2xl flex items-center gap-3 border border-white/20">
+                <i class="{{ $icon }}"></i>
+                <span class="font-medium">{{ session('message') }}</span>
             </div>
         </div>
     @endif

@@ -37,9 +37,19 @@
                         🎂 {{ $sandbox->birthday?->format('Y-m-d') ?? 'Unknown' }}
                     </p>
 
-                    <span class="inline-block text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
-                        mood: {{ $sandbox->mood }}
-                    </span>
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="inline-block text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                            mood: {{ $sandbox->mood }}
+                        </span>
+                        <div class="flex gap-2">
+                            <button wire:click="edit({{ $sandbox->id }})" class="p-2 rounded-full text-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer">
+                                <i class="fa-solid fa-paw"></i>
+                            </button>
+                            <button wire:click="delete({{ $sandbox->id }})" class="p-2 rounded-full text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             @empty
                 <p>No data</p>

@@ -31,7 +31,7 @@
 
                 <!-- Sand Box -->
                 <flux:sidebar.group :heading="__('Sand Box')" class="grid">
-                    <flux:sidebar.item icon="archive-box-arrow-down" :href="route('sandbox')" :current="request()->routeIs('sandbox')" wire:navigate>
+                    <flux:sidebar.item icon="face-smile" :href="route('sandbox')" :current="request()->routeIs('sandbox')" wire:navigate>
                         Sand Box
                     </flux:sidebar.item>
                 </flux:sidebar.group>

@@ -16,7 +16,7 @@ class Sandbox extends Component
 
     public function mount()
     {
-        $this->sandboxes = SandboxModel::all();
+        $this->sandboxes = SandboxModel::latest()->get();
     }
 
     public function save()

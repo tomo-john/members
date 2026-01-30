@@ -43,9 +43,9 @@
         <flux:button wire:click="save">
             {{ $editingId ? '更新する' : '保存する' }}
         </flux:button>
-        @if($editingId)
-            <flux:button variant="ghost" wire:click="resetForm">キャンセル</flux:button>
-        @endif
+        <flux:button variant="ghost" wire:click="resetForm" class="{{ $editingId ? '' : 'invisible' }}">
+            キャンセル
+        </flux:button>
     </div>
 
 

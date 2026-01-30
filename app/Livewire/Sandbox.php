@@ -26,6 +26,10 @@ class Sandbox extends Component
     // 保存処理
     public function save()
     {
+        if ($this->birthday === '') {
+            $this->birthday = null;
+        }
+
         $validated = $this->validate([
             'name' => 'required|max:20',
             'is_good_boy' => 'boolean',
@@ -99,6 +103,13 @@ class Sandbox extends Component
         $this->mood = SandboxModel::MOOD_IDLE;
 
         $this->resetValidation();
+    }
+
+    public function updatedBirthday($value)
+    {
+        if ($value === '') {
+            $this->birthday = null;
+        }
     }
 
     // 表示するBlade

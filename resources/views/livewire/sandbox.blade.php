@@ -34,12 +34,20 @@
 
     <!-- フォーム -->
     <div class="max-w-3xl mx-auto border rounded-md space-y-4 p-4 m-4">
-        <h2 class="text-2xl font-semibold ">Form</h2>
+        <h2 class="text-2xl font-semibold ">
+            {{ $editingId ? 'Edit' : 'Form' }}
+        </h2>
         <flux:input label="Name" icon="face-smile" wire:model="name" placeholder="じょん・どぅ" />
         <flux:checkbox label="Is good boy? 🐶" wire:model="is_good_boy" />
         <flux:input label="Birthday" icon="cake" wire:model="birthday" type='date' />
-        <flux:button wire:click="save">保存</flux:button>
+        <flux:button wire:click="save">
+            {{ $editingId ? '更新する' : '保存する' }}
+        </flux:button>
+        @if($editingId)
+            <flux:button variant="ghost" wire:click="resetForm">キャンセル</flux:button>
+        @endif
     </div>
+
 
     <!-- Index (カードグリッド) -->
     <div class="max-w-3xl mx-auto border rounded-md space-y-4 p-4 m-4">

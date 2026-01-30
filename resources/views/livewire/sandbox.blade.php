@@ -7,6 +7,32 @@
         </h2>
     </div>
 
+    <!-- フラッシュメッセージ(トースト風) -->
+    @if (session()->has('message'))
+        <div
+            wire:key="{{ session('message') . now() }}"
+            x-data="{ show: true }"
+            x-init="setTimeout(() => show = false, 3000)"
+            x-show="show"
+            x-transition
+            class="fixed top-8 right-8 z-50"
+        >
+            @php
+                [$bgClass, $icon] = match(session('type')) {
+                    'create' => ['bg-green-600', 'fa-solid fa-plus-circle'],
+                    'update' => ['bg-blue-600', 'fa-solid fa-pen-square'],
+                    'delete' => ['bg-red-600', 'fa-solid fa-trash-can'],
+                    default => ['bg-gray-600', 'fa-solid fa-check'],
+            };
+            @endphp
+            <div class="{{ $bgClass }} text-white text-sm rounded-lg px-4 py-3 shadow-2xl flex items-center gap-3 border border-white/20">
+                <i class="{{ $icon }}"></i>
+                <span class="font-medium">{{ session('message') }}</span>
+            </div>
+        </div>
+    @endif
+
+    <!-- フォーム -->
     <div class="max-w-3xl mx-auto border rounded-md space-y-4 p-4 m-4">
         <h2 class="text-2xl font-semibold ">Form</h2>
         <flux:input label="Name" icon="face-smile" wire:model="name" placeholder="じょん・どぅ" />
@@ -15,6 +41,7 @@
         <flux:button wire:click="save">保存</flux:button>
     </div>
 
+    <!-- Index (カードグリッド) -->
     <div class="max-w-3xl mx-auto border rounded-md space-y-4 p-4 m-4">
         <h2 class="text-2xl font-semibold ">Index</h2>
 
@@ -45,7 +72,10 @@
                             <button wire:click="edit({{ $sandbox->id }})" class="p-2 rounded-full text-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer">
                                 <i class="fa-solid fa-paw"></i>
                             </button>
-                            <button wire:click="delete({{ $sandbox->id }})" class="p-2 rounded-full text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer">
+                            <button wire:click="delete({{ $sandbox->id }})"
+                                    wire:confirm="本当に削除してよろしいですか？🐶"
+                                    class="p-2 rounded-full text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer"
+                            >
                                 <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>

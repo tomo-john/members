@@ -34,6 +34,8 @@ class Sandbox extends Component
 
         $sandbox = SandboxModel::create($validated);
         $this->sandboxes->prepend($sandbox);
+        session()->flash('message', $sandbox->name . ' を登録しました');
+        session()->flash('type', 'create');
 
         $this->resetForm();
     }
@@ -50,6 +52,8 @@ class Sandbox extends Component
         $sandbox = SandboxModel::findOrFail($id);
         $sandbox->delete();
         $this->sandboxex = $this->sandboxes->reject(fn($s) => $s->id === $id);
+        session()->flash('message', $sandbox->name . ' を削除しました');
+        session()->flash('type', 'delete');
     }
 
     // フォームリセット

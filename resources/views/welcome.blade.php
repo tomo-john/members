@@ -62,13 +62,16 @@
                             会員募集中(🐶)
                         </p>
                         <div class="flex justify-center lg:justify-start gap-4">
-                            <a href="{{ route('login') }}"
-                               class="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
-                                ログイン
-                            </a>
-                            <a href="{{ route('register') }}"
-                               class="px-6 py-3 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
-                                登録する
+                            @guest
+                                <a href="{{ route('login') }}" class="btnsetb">
+                                    ログイン
+                                </a>
+                                <a href="{{ route('register') }}" class="btnsetr">
+                                    登録する
+                                </a>
+                            @endguest
+                            <a href="#" class="btnset bg-green-600 hover:bg-green-700">
+                                ダミー
                             </a>
                         </div>
                     </div>

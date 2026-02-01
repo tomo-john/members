@@ -66,4 +66,9 @@ class User extends Authenticatable
     public function posts() {
         return $this->hasMany(Post::class);
     }
+
+    // Roleモデルと多対多のリレーション
+    public function roles() {
+        return $this->belongsToMany(Role::class);
+    }
 }

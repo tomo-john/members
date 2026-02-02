@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-// Gate使う
 use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
@@ -55,7 +54,6 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        Gate::authorize('post-owner', $post);
         return view('post.edit', compact('post'));
     }
 

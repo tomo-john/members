@@ -86,7 +86,11 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        $post->delete();
-        return redirect()->route('post.index')->with('message', '投稿を削除しました');
+        if (Gate::any(['post-owner', 'admin'], $post)) {
+            $post->delete();
+            return redirect()->route('post.index')->with('message', '投稿を削除しました');
+        } else {
+            abort('403', 'Unauthorized action 🐶');
+        }
     }
 }

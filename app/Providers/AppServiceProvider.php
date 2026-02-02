@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-// Gate使う
 use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +29,16 @@ class AppServiceProvider extends ServiceProvider
         // 投稿本人かどうかを判定
         Gate::define('post-owner', function ($user, $post) {
             return $user->id === $post->user_id;
+        });
+
+        // 管理者かどうかを判定
+        Gate::define('admin', function ($user) {
+            foreach($user->roles as $role) {
+                if($role->name == 'admin') {
+                    return true;
+                }
+            }
+            return false;
         });
     }
 

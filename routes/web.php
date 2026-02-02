@@ -18,10 +18,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Post (Laravelの教科書学習用)
     Route::resource('post', PostController::class);
-    // ミドルウェアによるGate制限
-    Route::resource('post', PostController::class)
-        ->only(['edit', 'update'])
-        ->middleware('can:post-owner,post');
 
     // Sand box (Livewire 2ファイル構成・コントローラなし)
     Route::get('/sandbox', Sandbox::class)->name('sandbox');

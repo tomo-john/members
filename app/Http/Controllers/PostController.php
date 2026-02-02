@@ -59,7 +59,6 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
-        Gate::authorize('post-owner', $post);
         $inputs = $request->validate([
             'title' => 'required|max:255',
             'body' => 'required|max:1000',
@@ -84,11 +83,7 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        if (Gate::any(['post-owner', 'admin'], $post)) {
-            $post->delete();
-            return redirect()->route('post.index')->with('message', '投稿を削除しました');
-        } else {
-            abort('403', 'Unauthorized action 🐶');
-        }
+        $post->delete();
+        return redirect()->route('post.index')->with('message', '投稿を削除しました');
     }
 }

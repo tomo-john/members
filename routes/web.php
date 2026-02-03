@@ -14,7 +14,7 @@ Route::view('dashboard', 'dashboard')
 
 require __DIR__.'/settings.php';
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     // Post (Laravelの教科書学習用)
     Route::resource('post', PostController::class);

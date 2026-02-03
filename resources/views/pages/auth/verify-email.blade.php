@@ -1,7 +1,8 @@
 <x-layouts::auth>
     <div class="mt-4 flex flex-col gap-6">
         <flux:text class="text-center">
-            {{ __('Please verify your email address by clicking on the link we just emailed to you.') }}
+            ご登録ありがとうございます🐶
+            お手数ですが、メールアドレスの確認をさせて下さい。下記ボタンをクリックして下さいね🐶
         </flux:text>
 
         @if (session('status') == 'verification-link-sent')
@@ -14,7 +15,9 @@
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
                 <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('Resend verification email') }}
+                    <i class="fa-solid fa-dog mx-1"></i>
+                    認証
+                    <i class="fa-solid fa-dog mx-1"></i>
                 </flux:button>
             </form>
 

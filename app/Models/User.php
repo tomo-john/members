@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\Notifications\NewVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -70,5 +71,10 @@ class User extends Authenticatable implements MustVerifyEmail
     // Roleモデルと多対多のリレーション
     public function roles() {
         return $this->belongsToMany(Role::class);
+    }
+
+    // 認証メール通知
+    public function sendEmailVerificationNotification() {
+        $this->notify(new NewVerifyEmail());
     }
 }

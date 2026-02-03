@@ -14,14 +14,20 @@
                             {{ $post->title }}
                         </div>
                         <div class="flex justify-end  gap-4 my-2">
-                            <a href="{{ route('post.edit', $post) }}">
-                                <flux:button class="bg-teal-700">編集</flux:button>
-                            </a>
-                            <form method="post" action="{{ route('post.destroy', $post) }}">
-                                @csrf
-                                @method('delete')
-                                <flux:button variant="danger" class="bg-red-700" type="submit" onClick="return confirm('本当に削除しますか？🐶');">削除</flux:button>
-                            </form>
+                            <!-- Policyで表示制限 -->
+                            @can('update', $post)
+                                <a href="{{ route('post.edit', $post) }}">
+                                    <flux:button class="bg-teal-700">編集</flux:button>
+                                </a>
+                            @endcan
+
+                            @can('delete', $post)
+                                <form method="post" action="{{ route('post.destroy', $post) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <flux:button variant="danger" class="bg-red-700" type="submit" onClick="return confirm('本当に削除しますか？🐶');">削除</flux:button>
+                                </form>
+                            @endcan
                         </div>
                     </div>
                     <hr class="w-full">

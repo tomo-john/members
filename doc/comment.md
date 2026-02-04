@@ -81,7 +81,13 @@ class Comment extends Model
 ```php
 <?php
 public function comments() {
-    $this->hasMany(Comment::class);
+    return $this->hasMany(Comment::class);
 }
+```
+
+## Livewireコンポーネントの作成
+
+```bash
+php artisan make:livewire CommentSection --class
 ```
 

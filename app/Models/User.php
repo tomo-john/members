@@ -80,6 +80,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     // ユーザーは複数のコメントを持つ
     public function comments() {
-        $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
 }

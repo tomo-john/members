@@ -43,6 +43,9 @@
                     <div class="text-sm font-semibold flex flex-row-reverse text-black">
                         <p> {{ $post->user->name }} • {{ $post->created_at->diffForHumans() }}</p>
                     </div>
+
+                    <!-- コメント(Livewire) -->
+                    @livewire('comment-section', ['post' => $post])
                 </div>
             </div>
         </div>

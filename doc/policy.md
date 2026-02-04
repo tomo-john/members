@@ -127,7 +127,6 @@ php artisan make:policy PostPolicy --model=Post
 
 </details>
 
-
 ## Policyでビューに制限をかける
 
 ```blade

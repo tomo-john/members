@@ -77,4 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification() {
         $this->notify(new NewVerifyEmail());
     }
+
+    // ユーザーは複数のコメントを持つ
+    public function comments() {
+        $this->hasMany(Comment::class);
+    }
 }

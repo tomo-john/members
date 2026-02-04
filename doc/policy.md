@@ -124,6 +124,7 @@ php artisan make:policy PostPolicy --model=Post
         return redirect()->route('post.index')->with('message', '投稿を削除しました');
     }
     ```
+a
 
 </details>
 

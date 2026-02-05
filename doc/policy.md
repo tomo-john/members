@@ -12,119 +12,118 @@ php artisan make:policy PostPolicy --model=Post
 
 
 <details>
-  <summary>生成された`app/Policies/PostPolicy.php`を編集</summary>
+<summary>生成された`app/Policies/PostPolicy.php`を編集</summary>
 
-  ```php
-    <?php
+```php
+<?php
 
-    namespace App\Policies;
+namespace App\Policies;
 
-    use App\Models\Post;
-    use App\Models\User;
-    use Illuminate\Auth\Access\Response;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
-    class PostPolicy
+class PostPolicy
+{
+    /**
+     * index
+     */
+    public function viewAny(User $user): bool
     {
-        /**
-         * index
-         */
-        public function viewAny(User $user): bool
-        {
-            return false;
+        return false;
+    }
+
+    /**
+     * show
+     */
+    public function view(User $user, Post $post): bool
+    {
+        return false;
+    }
+
+    /**
+     * create
+     */
+    public function create(User $user): bool
+    {
+        return false;
+    }
+
+    /**
+     * edit / update
+     */
+    public function update(User $user, Post $post): bool
+    {
+        return $user->id == $post->user_id;
+    }
+
+    /**
+     * destroy
+     */
+    public function delete(User $user, Post $post): bool
+    {
+        // 作成者は削除可能
+        if ($user->id == $post->user_id) {
+            return true;
         }
 
-        /**
-         * show
-         */
-        public function view(User $user, Post $post): bool
-        {
-            return false;
-        }
-
-        /**
-         * create
-         */
-        public function create(User $user): bool
-        {
-            return false;
-        }
-
-        /**
-         * edit / update
-         */
-        public function update(User $user, Post $post): bool
-        {
-            return $user->id == $post->user_id;
-        }
-
-        /**
-         * destroy
-         */
-        public function delete(User $user, Post $post): bool
-        {
-            // 作成者は削除可能
-            if ($user->id == $post->user_id) {
+        // 管理者は削除可能
+        foreach ($user->roles as $role) {
+            if ($role->name == 'admin') {
                 return true;
             }
-
-            // 管理者は削除可能
-            foreach ($user->roles as $role) {
-                if ($role->name == 'admin') {
-                    return true;
-                }
-            }
-
-            // その他の場合、削除不可能
-            return false;
         }
 
-        /**
-         * ソフトデリート(一時的に削除)されたレコードをDBに復元する権限を定義
-         */
-        public function restore(User $user, Post $post): bool
-        {
-            return false;
-        }
-
-        /**
-         * ソフトデリートされたレコードをDBから完全に削除する権限を定義
-         */
-        public function forceDelete(User $user, Post $post): bool
-        {
-            return false;
-        }
+        // その他の場合、削除不可能
+        return false;
     }
-  ```
+
+    /**
+     * ソフトデリート(一時的に削除)されたレコードをDBに復元する権限を定義
+     */
+    public function restore(User $user, Post $post): bool
+    {
+        return false;
+    }
+
+    /**
+     * ソフトデリートされたレコードをDBから完全に削除する権限を定義
+     */
+    public function forceDelete(User $user, Post $post): bool
+    {
+        return false;
+    }
+}
+```
 
 </details>
 
 <details>
-  <summary>コントローラ側の記載(edit, update, delete)</summary>
+<summary>コントローラ側の記載(edit, update, delete)</summary>
 
-  ```php
-  <?php
-    public function edit(Post $post)
-    {
-        Gate::authorize('update', $post);
-        return view('post.edit', compact('post'));
-    }
+```php
+<?php
+public function edit(Post $post)
+{
+    Gate::authorize('update', $post);
+    return view('post.edit', compact('post'));
+}
 
-    public function update(Request $request, Post $post)
-    {
-        Gate::authorize('update', $post);
-        $inputs = $request->validate([
-            'title' => 'required|max:255',
-            // ...略
-    }
+public function update(Request $request, Post $post)
+{
+    Gate::authorize('update', $post);
+    $inputs = $request->validate([
+        'title' => 'required|max:255',
+        // ...略
+}
 
-    public function destroy(Post $post)
-    {
-        Gate::authorize('delete', $post);
-        $post->delete();
-        return redirect()->route('post.index')->with('message', '投稿を削除しました');
-    }
-    ```
-a
+public function destroy(Post $post)
+{
+    Gate::authorize('delete', $post);
+    $post->delete();
+    return redirect()->route('post.index')->with('message', '投稿を削除しました');
+}
+```
 
 </details>
 

@@ -7,6 +7,7 @@ use App\Concerns\ProfileValidationRules;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Illuminate\Validation\Rule;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -46,7 +47,7 @@ class CreateNewUser implements CreatesNewUsers
             'avatar' => ['nullable', 'image', 'max:1024'],
         ])->validate();
 
-        // 2. ユーザーデータの準備（ハッシュ化などは自動または手動で確認してね）
+        // 2. ユーザーデータの準備
         $userData = [
             'name' => $input['name'],
             'email' => $input['email'],
@@ -66,6 +67,7 @@ class CreateNewUser implements CreatesNewUsers
 
         // ユーザーを作成
         $user = User::create($userData);
+        $user->roles()->attach(2);
 
         return $user;
     }

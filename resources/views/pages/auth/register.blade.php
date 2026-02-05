@@ -5,7 +5,7 @@
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6" enctype="multipart/form-data">
             @csrf
             <!-- Name -->
             <flux:input
@@ -50,6 +50,13 @@
                 autocomplete="new-password"
                 :placeholder="__('Confirm password')"
                 viewable
+            />
+
+            <!-- Avatar追加 -->
+            <flux:input
+                id="avatar"
+                name="avatar"
+                type="file"
             />
 
             <div class="flex items-center justify-end">

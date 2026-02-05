@@ -64,6 +64,9 @@ class CreateNewUser implements CreatesNewUsers
             $userData['avatar'] = $filename;
         }
 
-        return User::create($userData);
+        // ユーザーを作成
+        $user = User::create($userData);
+
+        return $user;
     }
 }

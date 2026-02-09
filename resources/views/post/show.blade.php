@@ -10,8 +10,13 @@
                 <x-message :message="session('message')" type="success" />
                 <div class="bg-white w-full  rounded-2xl px-10 py-8 shadow-lg hover:shadow-2xl transition duration-500">
                     <div class="flex justify-between">
-                        <div class="text-lg text-gray-700 font-semibold">
-                            {{ $post->title }}
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center rounded-full w-12 h-12 bg-gray-200 border border-gray-100 shadow-sm overflow-hidden">
+                                <img src="{{ asset('storage/avatar/' . ($post->user->avatar ?? 'user_default.jpg')) }}">
+                            </div>
+                            <p class="text-lg text-gray-700 font-semibold">
+                                {{ $post->title }}
+                            </p>
                         </div>
                         <div class="flex justify-end  gap-4 my-2">
                             <!-- Policyで表示制限 -->

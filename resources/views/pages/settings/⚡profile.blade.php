@@ -8,12 +8,15 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 new class extends Component {
     use ProfileValidationRules;
+    use WithFileUploads;
 
     public string $name = '';
     public string $email = '';
+    public $avatar;
 
     /**
      * Mount the component.
@@ -31,7 +34,24 @@ new class extends Component {
     {
         $user = Auth::user();
 
-        $validated = $this->validate($this->profileRules($user->id));
+        $validated = $this->validate($this->profileRules($user->id), [
+            'avatar' => ['nullable', 'image', 'max:1024'],
+        ]);
+
+        // avatar処理
+        if ($this->avatar) {
+            if ($user->avatar !== 'user_default.jpg') {
+                Storage::disk('public')->delete('avatar/' . $user->avatar);
+            }
+
+            $timestamp = now()->format('YmdHis');
+            $originalName = $this->avatar->getClientOriginalName();
+            $filename = $timestamp . '_' . $originalName;
+            $this->avatar->storeAs('avatar', $filename, 'public');
+            $validated['avatar'] = $filename;
+        } else {
+            unset($validated['avatar']);
+        }
 
         $user->fill($validated);
 
@@ -84,9 +104,6 @@ new class extends Component {
     <x-pages::settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
             <flux:input wire:model.live="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
-            <!-- Livewire flux テスト-->
-            <flux:icon.bolt />
-            <div><flux:icon.bolt class="inline"/>入力された名前は: {{ $name }}</div>
 
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
@@ -108,6 +125,30 @@ new class extends Component {
                         @endif
                     </div>
                 @endif
+            </div>
+
+            <!-- avatar -->
+            <div>
+                <label for="avatar" class="block text-sm font-medium">アバター</label>
+                <div class="my-2">
+                    @if ($avatar)
+                        <p class="text-sm mb-1">プレビュー: </p>
+                        <img src="{{ $avatar->temporaryUrl() }}" alt="Avatar Preview" class="w-50 rounded-full">
+                    @else (auth()->user()->avatar)
+                        <p class="text-sm mb-1">現在のアバター: </p>
+                        <img src="{{ asset('storage/avatar/' . (auth()->user()->avatar ?? 'user_default.jpg') )}}" alt="Current Avatar" class="w-50 rounded-full">
+                    @endif
+                </div>
+
+                <flux:input id="avatar" type="file" wire:model="avatar" class="mt-1 block w-full" />
+
+                <div wire:loading wire:target="avatar" class="text-sm mt-1">
+                    アップロード中...
+                </div>
+
+                @error('avatar')
+                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="flex items-center gap-4">

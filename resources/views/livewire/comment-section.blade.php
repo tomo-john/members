@@ -14,7 +14,7 @@
                         <img src="{{ asset('storage/avatar/' . ($comment->user->avatar ?? 'user_default.jpg')) }}" class="w-full h-full rounded-full">
                     </span>
                     <p class="text-sm font-semibold flex flex-row-reverse">
-                        <p>{{ $comment->user->name }} / {{ $comment->created_at->diffForHumans() }}</p>
+                        <p>{{ $comment->user->name ?? '退会ユーザー' }} / {{ $comment->created_at->diffForHumans() }}</p>
                     </p>
                 </div>
             </div>

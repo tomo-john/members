@@ -15,6 +15,13 @@
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
+
+                    <!-- User List (admin専用) -->
+                    @can('admin')
+                        <flux:sidebar.item icon="user" :href="route('users.list')" :current="request()->routeIs('users.list')" wire:navigate>
+                            ユーザー一覧
+                        </flux:sidebar.item>
+                    @endcan
                 </flux:sidebar.group>
 
                 <!-- Post -->

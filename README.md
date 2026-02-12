@@ -1,6 +1,19 @@
 # members
 
-Laravel 12(学習用) APP
+Laravel 12 学習用APP
+
+学習したサイト: [Laravelの教科書](https://textpro.addisteria.com)
+
+書籍版を先に学習後にWeb版へ🐶
+
+=> 2026/02/12 完了
+
+## memo
+
+- Laravl 12
+- Bun
+- Livewire
+- Tailwind CSS
 
 ## スターターキット
 

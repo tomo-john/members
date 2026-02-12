@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Role;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Storage;
 
 class UserList extends Component
 {
@@ -21,6 +22,15 @@ class UserList extends Component
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
+
+        // 役割の削除
+        $user->roles()->detach();
+
+        // アバター画像の削除
+        if ($user->avatar && $user->avatar !== 'user_default.jpg') {
+            Storage::disk('public')->delete('avatar/' . $user->avatar);
+        }
+
         $user->delete();
         // $this->users = $this->users->reject(fn ($user) => $user->id === $id);
         session()->flash('message', 'ユーザーを削除しました');

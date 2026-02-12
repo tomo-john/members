@@ -11,6 +11,7 @@ class UserList extends Component
 {
     use WithPagination;
     public $roles;
+    public $search = '';
 
     public function mount(): void
     {
@@ -36,10 +37,22 @@ class UserList extends Component
         }
     }
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
+        $query = User::query();
+
+        if ($this->search) {
+            $query->where('email', 'like', "%{$this->search}%")
+                  ->orWhere('name', 'like', "%{$this->search}%");
+        }
+
         return view('livewire.user-list', [
-            'users' => User::paginate(10)
+            'users' => $query->paginate(10)
         ]);
     }
 }

@@ -5,6 +5,11 @@
                 {{ session('message') }}
             </div>
         @endif
+
+        <div class="mb-4">
+            <input type="text" wire:model.live="search" placeholder="メールアドレスまたは名前で検索🐶" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+
         <table class="min-w-full bg-white border border-gray-200">
             <thead class="bg-gray-50">
                 <tr>

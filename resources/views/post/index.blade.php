@@ -18,10 +18,13 @@
                                 </h1>
                             </div>
                             <hr class="w-full">
-                            <p class="mt-4 text-gray-600 py-4">{{ $post->body }}</p>
+                            <p class="mt-4 text-gray-600 py-4">{{ Str::limit($post->body, 100, '...') }}</p>
                             <div class="text-sm font-semibold flex flex-row-reverse text-black">
                                 <p>{{ $post->user->name ?? '退会ユーザー' }} / {{ $post->created_at->diffForHumans() }}</p>
                             </div>
+                            @if ($post->comments->count())
+                                <flux:badge variant="solid" color="teal">コメント {{ $post->comments->count() }}件</flux:badge>
+                            @endif
                         </div>
                     </div>
                 </div>

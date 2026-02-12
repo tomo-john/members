@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewUserRegistered;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -67,8 +69,12 @@ class CreateNewUser implements CreatesNewUsers
 
         // ユーザーを作成
         $user = User::create($userData);
+
+        // デフォルトの役割を追加
         $user->roles()->attach(2);
 
+        // 管理者への通知を送信
+        Notification::route('mail', config('mail.admin'))->notify(new NewUserRegistered($user));
         return $user;
     }
 }
